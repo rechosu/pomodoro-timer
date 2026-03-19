@@ -243,6 +243,21 @@ body, html {
     align-items: center;
 }
 
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #357ABD;
+}
+
 /* タイマーの文字サイズを少し調整（画面に収まりやすくするため） */
 #timer-display {
     font-size: 80px;
