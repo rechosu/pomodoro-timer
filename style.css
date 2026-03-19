@@ -1,0 +1,252 @@
+#timer-display {
+    font-size: 80px;      /* 数字を大きく */
+    font-weight: bold;    /* 太字にする */
+    color: #333;          /* 文字の色 */
+    text-align: center;   /* 中央寄せ */
+    font-family: 'Courier New', Courier, monospace; /* デジタル時計風のフォント */
+}
+
+#user-area {
+    font-size: 16px;
+    color: #333;
+    background: #f6f7f9;
+    border: 1px solid #e6e8ee;
+    padding: 8px 12px;
+    border-radius: 999px;
+}
+
+#user-area .label {
+    opacity: 0.7;
+    margin-right: 4px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: min(320px, 90vw);
+    margin: 10px 0 20px;
+}
+
+.field input {
+    padding: 10px 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #d7dbe6;
+    outline: none;
+}
+
+.field input[readonly] {
+    background: #f6f7f9;
+    color: #333;
+    cursor: default;
+    pointer-events: none;
+}
+
+.report-list {
+    width: min(420px, 90vw);
+    max-height: 220px;
+    overflow: auto;
+    border: 1px solid #e6e8ee;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.report-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f2f7;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.report-item:last-child {
+    border-bottom: none;
+}
+
+.report-item .meta {
+    opacity: 0.7;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.report-item .headline {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.report-item .headline .user {
+    opacity: 0.75;
+    font-size: 12px;
+}
+
+.field input:focus {
+    border-color: #7a8cff;
+    box-shadow: 0 0 0 3px rgba(122, 140, 255, 0.18);
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(12px);
+    background: #222;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1200;
+}
+
+.toast.center {
+    top: 50%;
+    bottom: auto;
+    transform: translate(-50%, -50%) translateY(12px);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.center.show {
+    transform: translate(-50%, -50%) translateY(0);
+}
+/* モーダル背景（画面全体を暗くする） */
+.modal-overlay {
+/* 最初は隠す */
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 半透明の黒 */
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+/* モーダルの中身 */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease-out; /* 出現アニメーション */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 表示状態にするためのクラス */
+.modal-overlay.active {
+    display: flex;
+}
+/* 親要素：画面からはみ出た分を隠す */
+.container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* はみ出た右側のページを隠す */
+}
+
+/* 各ページの共通設定 */
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out; /* 動くスピードと滑らかさ */
+    background: white; /* 背景色がないと下が透けます */
+}
+
+/* メイン画面：最初に見える位置 */
+#main-page.active {
+    transform: translateX(0);
+}
+#main-page.left {
+    transform: translateX(-100%); /* 左に消える */
+}
+
+/* 設定画面：最初は右の外側に待機 */
+#settings-page {
+    transform: translateX(100%);
+}
+/* 設定画面：アクティブになったら中央に来る */
+#settings-page.active {
+    transform: translateX(0);
+}
+
+/* レポート画面：最初は右の外側に待機 */
+#reports-page {
+    transform: translateX(100%);
+}
+/* レポート画面：アクティブになったら中央に来る */
+#reports-page.active {
+    transform: translateX(0);
+}
+/* containerが画面いっぱいに広がるようにし、余白をリセット */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ページ内の要素を中央に寄せる設定を追加 */
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+    background: white;
+
+    /* 追加：中身を中央に配置する設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 縦方向の中央 */
+    align-items: center;     /* 横方向の中央 */
+    gap: 20px;               /* 要素同士の隙間 */
+}
+
+/* ボタンを並べるエリア */
+.controls, .settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+/* タイマーの文字サイズを少し調整（画面に収まりやすくするため） */
+#timer-display {
+    font-size: 80px;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 20px;
+}

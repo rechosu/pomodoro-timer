@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポモドーロタイマー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div class="container">
+
+
+
+
+          <div id="main-page" class="page active">
+              <div id="user-area">
+                  <span class="label">ユーザー：</span>
+                  <span id="username-display"></span>
+              </div>
+              <div id="timer-display">00:05</div>
+              <div class="controls">
+                  <button id="start-btn">START</button>
+                  <button id="go-settings">設定</button>
+                  <button id="go-reports">レポート</button>
+                  <button id="open-modal-btn">レポートを手動で開く</button>
+              </div>
+              <input type="checkbox" id="mode-toggle" style="display:none">
+          </div>
+
+          <div id="settings-page" class="page">
+              <div class="settings-content">
+                  <h2>設定</h2>
+                  <p>ユーザー名の登録/変更をします。</p>
+                  <div class="field">
+                      <label for="username-input">ユーザー名</label>
+                      <input id="username-input" type="text" placeholder="未登録" readonly tabindex="-1" aria-readonly="true">
+                      <button id="open-username-modal-btn" type="button">ユーザー名を登録/変更（モーダル）</button>
+                  </div>
+                  <div class="field">
+                      <label for="task-input">タスクの登録と変更</label>
+                      <input id="task-input" type="text" placeholder="未登録" readonly tabindex="-1" aria-readonly="true">
+                      <button id="open-task-modal-btn" type="button">タスクを登録/変更（モーダル）</button>
+                  </div>
+                  <button id="back-main">戻る</button>
+              </div>
+          </div>
+
+          <div id="reports-page" class="page">
+              <div class="settings-content">
+                  <h2>レポート</h2>
+                  <p>保存した作業レポートを確認できます。</p>
+                  <div class="field">
+                      <label>レポート履歴</label>
+                      <div id="report-list" class="report-list" aria-live="polite"></div>
+                      <button id="clear-reports-btn" type="button">レポート履歴を削除</button>
+                  </div>
+                  <button id="back-main-from-reports">戻る</button>
+              </div>
+          </div>
+      </div>
+
+      <div id="modal-overlay" class="modal-overlay">
+
+        <div class="modal-content">
+            <h2>作業レポート</h2>
+            <p>お疲れ様でした！結果を選択してください。</p>
+
+            <select id="report-status">
+                <option value="success">うまくいった</option>
+                <option value="fail">うまくいかなかった</option>
+                <option value="retry">再挑戦！</option>
+            </select>
+
+            <div class="modal-buttons">
+                <button id="close-modal-btn">閉じる</button>
+                <button id="save-report-btn" class="primary">保存する</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="username-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="username-modal-title">ユーザー名を登録</h2>
+            <p id="username-modal-description">最初にユーザー名を入力してください。</p>
+            <div class="field">
+                <input id="username-modal-input" type="text" autocomplete="nickname" placeholder="ユーザー名を入力">
+                <button id="username-modal-save-btn" type="button">登録する</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="task-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="task-modal-title">タスクを登録</h2>
+            <p id="task-modal-description">最初にタスクを入力してください。</p>
+            <div class="field">
+                <input id="task-modal-input" type="text" placeholder="タスクを入力">
+                <button id="task-modal-save-btn" type="button">登録する</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="timer.js"></script>
+</body>
+</html>
